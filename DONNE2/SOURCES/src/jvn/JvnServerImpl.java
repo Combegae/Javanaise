@@ -27,7 +27,8 @@ public class JvnServerImpl extends UnicastRemoteObject
 
 
 	private Hashtable<Integer, JvnObject> objectList;
-	private Hashtable
+	private int lastIdUsed = 0;
+
 
 
   /**
@@ -70,10 +71,9 @@ public class JvnServerImpl extends UnicastRemoteObject
 	* @throws JvnException
 	**/
 	public JvnObject jvnCreateObject(Serializable o) throws jvn.JvnException {
-		
-
-		// to be completed 
-		return null; 
+		JvnObject Objet = new JvnObjectImpl(lastIdUsed, o);
+		lastIdUsed++;
+		return Objet;
 	}
 	
 	/**
