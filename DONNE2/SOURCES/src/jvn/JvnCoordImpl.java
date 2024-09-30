@@ -10,7 +10,10 @@
 package jvn;
 
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 
 public class JvnCoordImpl 	
@@ -21,7 +24,16 @@ public class JvnCoordImpl
   /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
+
+  private Hashtable<String, JvnObject> nameHash;
+  private Hashtable<Integer, String> idHash;
+  private Hashtable<Integer, ArrayList<JvnRemoteServer>> lockReadList;
+  private Hashtable<Integer, JvnRemoteServer> lockWriteList;
+
+
+
+  private int lastId = 0;
 
 /**
   * Default constructor
@@ -36,10 +48,9 @@ public class JvnCoordImpl
   *  newly created JVN object)
   * @throws java.rmi.RemoteException,JvnException
   **/
-  public int jvnGetObjectId()
-  throws java.rmi.RemoteException,jvn.JvnException {
-    // to be completed 
-    return 0;
+  public int jvnGetObjectId() throws java.rmi.RemoteException,jvn.JvnException {
+    
+    return lastId;
   }
   
   /**
@@ -50,8 +61,7 @@ public class JvnCoordImpl
   * @param js  : the remote reference of the JVNServer
   * @throws java.rmi.RemoteException,JvnException
   **/
-  public void jvnRegisterObject(String jon, JvnObject jo, JvnRemoteServer js)
-  throws java.rmi.RemoteException,jvn.JvnException{
+  public void jvnRegisterObject(String jon, JvnObject jo, JvnRemoteServer js) throws java.rmi.RemoteException,jvn.JvnException{
     // to be completed 
   }
   
@@ -61,8 +71,7 @@ public class JvnCoordImpl
   * @param js : the remote reference of the JVNServer
   * @throws java.rmi.RemoteException,JvnException
   **/
-  public JvnObject jvnLookupObject(String jon, JvnRemoteServer js)
-  throws java.rmi.RemoteException,jvn.JvnException{
+  public JvnObject jvnLookupObject(String jon, JvnRemoteServer js) throws java.rmi.RemoteException,jvn.JvnException{
     // to be completed 
     return null;
   }
@@ -74,8 +83,7 @@ public class JvnCoordImpl
   * @return the current JVN object state
   * @throws java.rmi.RemoteException, JvnException
   **/
-   public Serializable jvnLockRead(int joi, JvnRemoteServer js)
-   throws java.rmi.RemoteException, JvnException{
+   public Serializable jvnLockRead(int joi, JvnRemoteServer js) throws java.rmi.RemoteException, JvnException{
     // to be completed
     return null;
    }
@@ -87,8 +95,7 @@ public class JvnCoordImpl
   * @return the current JVN object state
   * @throws java.rmi.RemoteException, JvnException
   **/
-   public Serializable jvnLockWrite(int joi, JvnRemoteServer js)
-   throws java.rmi.RemoteException, JvnException{
+   public Serializable jvnLockWrite(int joi, JvnRemoteServer js) throws java.rmi.RemoteException, JvnException{
     // to be completed
     return null;
    }
@@ -98,8 +105,7 @@ public class JvnCoordImpl
 	* @param js  : the remote reference of the server
 	* @throws java.rmi.RemoteException, JvnException
 	**/
-    public void jvnTerminate(JvnRemoteServer js)
-	 throws java.rmi.RemoteException, JvnException {
+    public void jvnTerminate(JvnRemoteServer js) throws java.rmi.RemoteException, JvnException {
 	 // to be completed
     }
 }
