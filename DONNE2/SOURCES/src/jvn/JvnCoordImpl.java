@@ -9,11 +9,17 @@
 
 package jvn;
 
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
+import java.util.concurrent.locks.Lock;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 
 public class JvnCoordImpl 	
@@ -25,22 +31,28 @@ public class JvnCoordImpl
 	 * 
 	 */
   private static final long serialVersionUID = 1L;
+  private int lastIdUsed = 0;
 
   private Hashtable<String, JvnObject> nameHash;
   private Hashtable<Integer, String> idHash;
-  private Hashtable<Integer, ArrayList<JvnRemoteServer>> lockReadList;
+  private Hashtable<Integer, Set<JvnRemoteServer>> lockReadList;
   private Hashtable<Integer, JvnRemoteServer> lockWriteList;
+  private Hashtable<Integer, Serializable> localMemory;
 
 
-
-  private int lastId = 0;
 
 /**
   * Default constructor
   * @throws JvnException
   **/
-	private JvnCoordImpl() throws Exception {
-		// to be completed
+	public JvnCoordImpl() throws Exception {
+      Registry registry = LocateRegistry.getRegistry();
+      registry.rebind("Coordinateur", this);
+      nameHash = new Hashtable<String, JvnObject>();
+      idHash = new Hashtable<Integer, String>();
+      lockReadList = new Hashtable<Integer, Set<JvnRemoteServer>>();
+      lockWriteList = new Hashtable<Integer, JvnRemoteServer>();
+      localMemory = new Hashtable<Integer, Serializable>();
 	}
 
   /**
@@ -49,8 +61,8 @@ public class JvnCoordImpl
   * @throws java.rmi.RemoteException,JvnException
   **/
   public int jvnGetObjectId() throws java.rmi.RemoteException,jvn.JvnException {
-    
-    return lastId;
+    lastIdUsed += 1;
+    return lastIdUsed;
   }
   
   /**
@@ -61,8 +73,11 @@ public class JvnCoordImpl
   * @param js  : the remote reference of the JVNServer
   * @throws java.rmi.RemoteException,JvnException
   **/
-  public void jvnRegisterObject(String jon, JvnObject jo, JvnRemoteServer js) throws java.rmi.RemoteException,jvn.JvnException{
-    // to be completed 
+  public void jvnRegisterObject(String jon, JvnObject jo, JvnRemoteServer js) throws java.rmi.RemoteException, jvn.JvnException {
+    int jId = jo.jvnGetObjectId();
+    idHash.put(jId, jon);
+    nameHash.put(jon, jo);
+    localMemory.put(jId, jo.jvnGetSharedObject());
   }
   
   /**
@@ -72,8 +87,8 @@ public class JvnCoordImpl
   * @throws java.rmi.RemoteException,JvnException
   **/
   public JvnObject jvnLookupObject(String jon, JvnRemoteServer js) throws java.rmi.RemoteException,jvn.JvnException{
-    // to be completed 
-    return null;
+    JvnObject object = nameHash.get(jon);
+    return object;
   }
   
   /**
@@ -83,9 +98,35 @@ public class JvnCoordImpl
   * @return the current JVN object state
   * @throws java.rmi.RemoteException, JvnException
   **/
-   public Serializable jvnLockRead(int joi, JvnRemoteServer js) throws java.rmi.RemoteException, JvnException{
-    // to be completed
-    return null;
+  public Serializable jvnLockRead(int joi, JvnRemoteServer js) throws java.rmi.RemoteException, JvnException {
+    String objectName = idHash.get(joi);
+    Serializable objSerializable;
+    JvnObject objectLocal = nameHash.get(objectName);
+    if (objectLocal == null) {
+        throw new JvnException();
+    }
+    synchronized(objectLocal) {
+      JvnRemoteServer serverDistant = lockWriteList.get(joi);
+      if (serverDistant != null) {
+        try {
+          objSerializable = serverDistant.jvnInvalidateWriterForReader(joi);
+        } catch (Exception e) {
+          throw e;
+        }
+        lockWriteList.remove(joi);
+        localMemory.put(joi, objSerializable);
+      }
+      else {
+        objSerializable = localMemory.get(joi);
+      }
+      Set<JvnRemoteServer> LockReadServerList = lockReadList.get(joi);
+      if (LockReadServerList == null) {
+        LockReadServerList = new HashSet<JvnRemoteServer>();
+      }
+      LockReadServerList.add(js);
+      lockReadList.put(joi, LockReadServerList);
+    }
+    return objSerializable;
    }
 
   /**
@@ -95,9 +136,39 @@ public class JvnCoordImpl
   * @return the current JVN object state
   * @throws java.rmi.RemoteException, JvnException
   **/
-   public Serializable jvnLockWrite(int joi, JvnRemoteServer js) throws java.rmi.RemoteException, JvnException{
-    // to be completed
-    return null;
+  public Serializable jvnLockWrite(int joi, JvnRemoteServer js) throws java.rmi.RemoteException, JvnException {
+    String objectName = idHash.get(joi);
+    Serializable objSerializable;
+    JvnObject objectLocal = nameHash.get(objectName);
+    if (objectLocal == null) {
+      throw new JvnException();
+    }
+    synchronized (objectLocal) {
+      try {
+        JvnRemoteServer serverDistant = lockWriteList.get(joi);
+        if (serverDistant != null) {
+          objSerializable = serverDistant.jvnInvalidateWriter(joi);
+          localMemory.put(joi, objSerializable);
+
+        } else {
+          Set<JvnRemoteServer> LockReadServerList = lockReadList.get(joi);
+          if (LockReadServerList == null) {
+            LockReadServerList = new HashSet<JvnRemoteServer>();
+          }
+          for (JvnRemoteServer server : LockReadServerList) {
+            server.jvnInvalidateReader(joi);
+          }
+          LockReadServerList.add(js);
+          lockReadList.put(joi, LockReadServerList);
+          objSerializable = localMemory.get(joi);
+        }
+      } catch (Exception e) {
+        throw e;
+      }
+      
+    }
+
+    return objSerializable;
    }
 
 	/**
@@ -106,7 +177,26 @@ public class JvnCoordImpl
 	* @throws java.rmi.RemoteException, JvnException
 	**/
     public void jvnTerminate(JvnRemoteServer js) throws java.rmi.RemoteException, JvnException {
-	 // to be completed
+      Set<Integer> enumWriteKey = lockWriteList.keySet(); 
+      for (int key : enumWriteKey) {
+        JvnRemoteServer server = lockWriteList.get(key);
+        if (server == js) {
+          lockWriteList.remove(key);
+        }
+      }
+
+      Set<Integer> enumReadKey = lockReadList.keySet(); 
+      for (int keyRead : enumReadKey) {
+        Set<JvnRemoteServer> serverlist = lockReadList.get(keyRead);
+        for (JvnRemoteServer serverRead : serverlist) {
+          if (serverRead == js) {
+            serverlist.remove(js);
+            lockReadList.put(keyRead, serverlist);
+          }
+        }
+      }
+
+      
     }
 }
 
