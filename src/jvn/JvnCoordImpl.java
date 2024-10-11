@@ -90,9 +90,14 @@ public class JvnCoordImpl
   * @param js : the remote reference of the JVNServer
   * @throws java.rmi.RemoteException,JvnException
   **/
-  public JvnObject jvnLookupObject(String jon, JvnRemoteServer js) throws java.rmi.RemoteException,jvn.JvnException{
-    JvnObject object = nameHash.get(jon);
-    return object;
+  public JvnObject jvnLookupObject(String jon, JvnRemoteServer js) throws java.rmi.RemoteException, jvn.JvnException {
+    try {
+      JvnObject object = nameHash.get(jon);
+      return object;
+    } catch (Exception e) {
+      throw new JvnException();
+    }
+
   }
   
   /**
@@ -123,6 +128,7 @@ public class JvnCoordImpl
       else {
         objSerializable = localMemory.get(joi);
       }
+      
       Set<JvnRemoteServer> LockReadServerList = lockReadList.get(joi);
       if (LockReadServerList == null) {
         LockReadServerList = new HashSet<JvnRemoteServer>();

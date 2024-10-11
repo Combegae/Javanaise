@@ -1,4 +1,4 @@
-export CLASSPATH=$CLASSPATH:~/Documents/Semestre9/SystemeRepartis/Javanaise/src
+export CLASSPATH=$CLASSPATH:~/Documents/Semestre9/SystemeRepartis/Javanaise2/src
 
 
 LANCER LE RMI SERVER SEULEMENT APRES LE CLASSPATH effectué !

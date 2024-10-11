@@ -28,7 +28,7 @@ public class JvnServerImpl extends UnicastRemoteObject
 	 */
 
 	// A JVN server is managed as a singleton 
-	private static JvnServerImpl js = null;
+	private static JvnServerImpl js;
 
 
 	private Hashtable<Integer, JvnObject> objectList;
@@ -82,13 +82,9 @@ public class JvnServerImpl extends UnicastRemoteObject
 	**/
 	public JvnObject jvnCreateObject(Serializable o) throws jvn.JvnException {
 		try {
-			System.out.println("TEST1");
 			int id = coordinateur.jvnGetObjectId();
-			System.out.println("TEST2");
 			JvnObject object = new JvnObjectImpl(id, o);
-			System.out.println("TEST3");
 			objectList.put(id, object);
-			System.out.println("TEST4");
 
 			return object;
 		} catch (Exception e) {
@@ -105,7 +101,6 @@ public class JvnServerImpl extends UnicastRemoteObject
 	**/
 	public  void jvnRegisterObject(String jon, JvnObject jo) throws jvn.JvnException {
 		try {
-			System.out.println("RegisterObject a");
 			coordinateur.jvnRegisterObject(jon, jo, this);
 		} catch (Exception e) {
 			System.out.println("RegisterObject Problem !!");
@@ -122,9 +117,17 @@ public class JvnServerImpl extends UnicastRemoteObject
 	**/
 	public  JvnObject jvnLookupObject(String jon) throws jvn.JvnException {
 		try {
-			return coordinateur.jvnLookupObject(jon, js);
+			System.out.println("JvnLOOKUP");
+			JvnObject object = coordinateur.jvnLookupObject(jon, js);
+			if (object == null) {
+				return null;
+			} else {
+				objectList.put(object.jvnGetObjectId(), object);
+				return object;
+			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new jvn.JvnException();
 		}
 	}	
@@ -183,8 +186,8 @@ public class JvnServerImpl extends UnicastRemoteObject
 	* @throws java.rmi.RemoteException,JvnException
 	**/
   public Serializable jvnInvalidateWriter(int joi) throws java.rmi.RemoteException,jvn.JvnException { 
-		(objectList.get(joi)).jvnLockWrite();
-		return null;
+		(objectList.get(joi)).jvnInvalidateWriter();
+		return (objectList.get(joi)).jvnGetSharedObject();
 	};
 	
 	/**
@@ -195,8 +198,8 @@ public class JvnServerImpl extends UnicastRemoteObject
 	**/
    public Serializable jvnInvalidateWriterForReader(int joi) throws java.rmi.RemoteException,jvn.JvnException { 
 		(objectList.get(joi)).jvnInvalidateWriterForReader();
-		return null;
-	 };
+		return (objectList.get(joi)).jvnGetSharedObject();
+	};
 
 }
 

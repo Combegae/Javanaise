@@ -130,7 +130,7 @@ public class JvnObjectImpl implements Remote, JvnObject {
         this.verrou = Verrou.NL; 
 
 
-        return null;
+        return o;
     }
 
     @Override
@@ -152,7 +152,7 @@ public class JvnObjectImpl implements Remote, JvnObject {
             default:
                 break;
         }
-        return null;
+        return o;
     }
 
 
