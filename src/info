@@ -1,4 +1,4 @@
-export CLASSPATH=$CLASSPATH:~/Documents/Semestre9/SystemeRepartis/Java/src/
+export CLASSPATH=$CLASSPATH:~/Documents/Semestre9/SystemeRepartis/Javanaise/src
 
 
 LANCER LE RMI SERVER SEULEMENT APRES LE CLASSPATH effectué !
@@ -8,5 +8,5 @@ LANCER LE RMI SERVER SEULEMENT APRES LE CLASSPATH effectué !
  pour compilier javac */*.java dans le répertoire src
 
  pour lancer le serveur java irc.mainCoordinateur
- Pour lancer irc java irc.irc
+ Pour lancer irc java irc.Irc
  

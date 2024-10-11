@@ -26,7 +26,7 @@ public class JvnServerImpl extends UnicastRemoteObject
   /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+
 	// A JVN server is managed as a singleton 
 	private static JvnServerImpl js = null;
 
@@ -48,8 +48,7 @@ public class JvnServerImpl extends UnicastRemoteObject
 		} catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }
-		// to be completed
-		// Export le serveur en RMI
+		objectList = new Hashtable<Integer, JvnObject>();
 	}
 	
   /**
@@ -90,6 +89,7 @@ public class JvnServerImpl extends UnicastRemoteObject
 			System.out.println("TEST3");
 			objectList.put(id, object);
 			System.out.println("TEST4");
+
 			return object;
 		} catch (Exception e) {
 			throw new jvn.JvnException();
@@ -105,8 +105,11 @@ public class JvnServerImpl extends UnicastRemoteObject
 	**/
 	public  void jvnRegisterObject(String jon, JvnObject jo) throws jvn.JvnException {
 		try {
-			this.coordinateur.jvnRegisterObject(jon, jo, js);
+			System.out.println("RegisterObject a");
+			coordinateur.jvnRegisterObject(jon, jo, this);
 		} catch (Exception e) {
+			System.out.println("RegisterObject Problem !!");
+			e.printStackTrace();
 			throw new jvn.JvnException();
 		}
 	}

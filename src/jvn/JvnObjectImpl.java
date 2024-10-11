@@ -1,10 +1,10 @@
 package jvn;
 
 import java.io.Serializable;
-import java.util.concurrent.Semaphore;
+import java.rmi.Remote;
 
 
-public class JvnObjectImpl implements JvnObject {
+public class JvnObjectImpl implements Remote, JvnObject {
 
     public enum Verrou {
         NL, RC, WC, R, W, RWC
@@ -15,10 +15,8 @@ public class JvnObjectImpl implements JvnObject {
     public Serializable o;
 
     
-    private JvnServerImpl serverLocal;
 
     public JvnObjectImpl(int id, Serializable o) {
-        this.serverLocal = JvnServerImpl.jvnGetServer();
         this.verrou = Verrou.NL;
         this.id = id;
         this.o = o;
@@ -34,7 +32,7 @@ public class JvnObjectImpl implements JvnObject {
             this.verrou = Verrou.RWC;
         }
         else if (this.verrou == Verrou.NL) {
-            this.serverLocal.jvnLockRead(this.id);
+            o = JvnServerImpl.jvnGetServer().jvnLockRead(this.id);
             this.verrou = Verrou.R;
         }
     }
@@ -44,20 +42,26 @@ public class JvnObjectImpl implements JvnObject {
         if (this.verrou == Verrou.WC || this.verrou == Verrou.RWC) {
             this.verrou = Verrou.W;
         } else if (this.verrou == Verrou.NL || this.verrou == Verrou.R || this.verrou == Verrou.RC) {
-            this.serverLocal.jvnLockWrite(this.id);
+            o = JvnServerImpl.jvnGetServer().jvnLockWrite(this.id);
             this.verrou = Verrou.W;
         }
         
     }
 
     @Override
-    public void jvnUnLock() throws JvnException {
+    public synchronized void jvnUnLock() throws JvnException {
         if (this.verrou == Verrou.R) {
             this.verrou = Verrou.RC;
         } else if (this.verrou == Verrou.W) {
             this.verrou = Verrou.WC;
         }
-        notifyAll();
+        try {
+            this.notifyAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.notifyAll();
+
     }
 
     @Override

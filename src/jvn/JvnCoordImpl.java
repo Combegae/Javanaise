@@ -30,7 +30,7 @@ public class JvnCoordImpl
   /**
 	 * 
 	 */
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 7411182992619482422L;
   private int lastIdUsed = 0;
 
   private Hashtable<String, JvnObject> nameHash;
@@ -38,6 +38,7 @@ public class JvnCoordImpl
   private Hashtable<Integer, Set<JvnRemoteServer>> lockReadList;
   private Hashtable<Integer, JvnRemoteServer> lockWriteList;
   private Hashtable<Integer, Serializable> localMemory;
+
 
 
 
@@ -74,7 +75,9 @@ public class JvnCoordImpl
   * @param js  : the remote reference of the JVNServer
   * @throws java.rmi.RemoteException,JvnException
   **/
-  public void jvnRegisterObject(String jon, JvnObject jo, JvnRemoteServer js) throws java.rmi.RemoteException, jvn.JvnException {
+  public void jvnRegisterObject(String jon, JvnObject jo, JvnRemoteServer js)
+      throws java.rmi.RemoteException, jvn.JvnException {
+    System.out.println("test");
     int jId = jo.jvnGetObjectId();
     idHash.put(jId, jon);
     nameHash.put(jon, jo);
