@@ -60,7 +60,6 @@ public class JvnObjectImpl implements Remote, JvnObject {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        this.notifyAll();
 
     }
 
@@ -94,7 +93,7 @@ public class JvnObjectImpl implements Remote, JvnObject {
                 }
                 break;
             default:
-                System.err.println("Default invalidateReader");
+                System.err.println("Default invalidateReader: " + verrou );
                 break;
         }
         this.verrou = Verrou.NL; 
