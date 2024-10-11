@@ -1,0 +1,416 @@
+!SESSION 2024-10-07 12:43:08.038 -----------------------------------------------
+eclipse.buildId=4.28.0.20230608-1200
+java.version=17.0.7
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.gmf.examples.runtime.diagram.geoshapes 4 0 2024-10-07 12:50:01.658
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.gmf.examples.runtime.diagram.geoshapes [2079]
+  Unresolved requirement: Require-Bundle: org.eclipse.gmf.runtime.diagram.ui.render; bundle-version="[1.2.0,2.0.0)"
+    -> Bundle-SymbolicName: org.eclipse.gmf.runtime.diagram.ui.render; bundle-version="1.7.2.202204130739"; singleton:="true"
+       org.eclipse.gmf.runtime.diagram.ui.render [2106]
+         Unresolved requirement: Require-Bundle: org.eclipse.gmf.runtime.diagram.ui.printing.render; bundle-version="[1.2.0,2.0.0)"
+           -> Bundle-SymbolicName: org.eclipse.gmf.runtime.diagram.ui.printing.render; bundle-version="1.8.0.202204130739"
+              org.eclipse.gmf.runtime.diagram.ui.printing.render [2102]
+                Unresolved requirement: Require-Bundle: org.eclipse.gmf.runtime.draw2d.ui.render.awt; bundle-version="[1.2.0,2.0.0)"
+                  -> Bundle-SymbolicName: org.eclipse.gmf.runtime.draw2d.ui.render.awt; bundle-version="1.10.0.202204130739"; singleton:="true"
+                     org.eclipse.gmf.runtime.draw2d.ui.render.awt [2111]
+                       No resolution report for the bundle.         Unresolved requirement: Require-Bundle: org.eclipse.gmf.runtime.draw2d.ui.render.awt; bundle-version="[1.2.0,2.0.0)"
+           -> Bundle-SymbolicName: org.eclipse.gmf.runtime.draw2d.ui.render.awt; bundle-version="1.10.0.202204130739"; singleton:="true"
+  Unresolved requirement: Require-Bundle: org.eclipse.gmf.runtime.diagram.ui.printing.render; bundle-version="[1.2.0,2.0.0)"
+    -> Bundle-SymbolicName: org.eclipse.gmf.runtime.diagram.ui.printing.render; bundle-version="1.8.0.202204130739"
+  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"] because it is exposed to package 'org.apache.batik.util.io' from resources org.apache.batik.util [osgi.identity; osgi.identity="org.apache.batik.util"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"] and org.apache.batik.util [osgi.identity; type="osgi.bundle"; version:Version="1.16.0.v20221027-0840"; osgi.identity="org.apache.batik.util"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.util)(&(bundle-version>=1.14.0)(!(bundle-version>=1.15.0))))
+     |
+    provide: osgi.wiring.bundle: org.apache.batik.util
+  org.apache.batik.util [osgi.identity; osgi.identity="org.apache.batik.util"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+
+Chain 2:
+  org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.transcoder)(&(bundle-version>=1.14.0)(!(bundle-version>=1.15.0))))
+     |
+    provide: osgi.wiring.bundle; bundle-version:Version="1.14.0.v20210324-0332"; osgi.wiring.bundle="org.apache.batik.transcoder"
+  org.apache.batik.transcoder [osgi.identity; osgi.identity="org.apache.batik.transcoder"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.anim.dom)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.anim.dom; uses:=org.apache.batik.dom
+  org.apache.batik.anim [osgi.identity; osgi.identity="org.apache.batik.anim"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.dom)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.dom; uses:=org.apache.batik.xml
+  org.apache.batik.dom [osgi.identity; osgi.identity="org.apache.batik.dom"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.xml)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.xml; uses:=null
+  org.apache.batik.xml [osgi.identity; osgi.identity="org.apache.batik.xml"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.util)(&(bundle-version>=1.14.0)(!(bundle-version>=2.0.0))))
+     |
+    provide: osgi.wiring.bundle: org.apache.batik.util
+  org.apache.batik.util [osgi.identity; type="osgi.bundle"; version:Version="1.16.0.v20221027-0840"; osgi.identity="org.apache.batik.util"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.gmf.examples.runtime.diagram.logic 4 0 2024-10-07 12:50:01.667
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.gmf.examples.runtime.diagram.logic [2080]
+  Unresolved requirement: Require-Bundle: org.eclipse.gmf.runtime.diagram.ui.render; bundle-version="[1.2.0,2.0.0)"
+    -> Bundle-SymbolicName: org.eclipse.gmf.runtime.diagram.ui.render; bundle-version="1.7.2.202204130739"; singleton:="true"
+       org.eclipse.gmf.runtime.diagram.ui.render [2106]
+         Unresolved requirement: Require-Bundle: org.eclipse.gmf.runtime.diagram.ui.printing.render; bundle-version="[1.2.0,2.0.0)"
+           -> Bundle-SymbolicName: org.eclipse.gmf.runtime.diagram.ui.printing.render; bundle-version="1.8.0.202204130739"
+              org.eclipse.gmf.runtime.diagram.ui.printing.render [2102]
+                Unresolved requirement: Require-Bundle: org.eclipse.gmf.runtime.draw2d.ui.render.awt; bundle-version="[1.2.0,2.0.0)"
+                  -> Bundle-SymbolicName: org.eclipse.gmf.runtime.draw2d.ui.render.awt; bundle-version="1.10.0.202204130739"; singleton:="true"
+                     org.eclipse.gmf.runtime.draw2d.ui.render.awt [2111]
+                       No resolution report for the bundle.         Unresolved requirement: Require-Bundle: org.eclipse.gmf.runtime.draw2d.ui.render.awt; bundle-version="[1.2.0,2.0.0)"
+           -> Bundle-SymbolicName: org.eclipse.gmf.runtime.draw2d.ui.render.awt; bundle-version="1.10.0.202204130739"; singleton:="true"
+  Unresolved requirement: Require-Bundle: org.eclipse.gmf.runtime.diagram.ui.printing.render; bundle-version="[1.2.0,2.0.0)"
+    -> Bundle-SymbolicName: org.eclipse.gmf.runtime.diagram.ui.printing.render; bundle-version="1.8.0.202204130739"
+  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"] because it is exposed to package 'org.apache.batik.util.io' from resources org.apache.batik.util [osgi.identity; osgi.identity="org.apache.batik.util"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"] and org.apache.batik.util [osgi.identity; type="osgi.bundle"; version:Version="1.16.0.v20221027-0840"; osgi.identity="org.apache.batik.util"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.util)(&(bundle-version>=1.14.0)(!(bundle-version>=1.15.0))))
+     |
+    provide: osgi.wiring.bundle: org.apache.batik.util
+  org.apache.batik.util [osgi.identity; osgi.identity="org.apache.batik.util"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+
+Chain 2:
+  org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.transcoder)(&(bundle-version>=1.14.0)(!(bundle-version>=1.15.0))))
+     |
+    provide: osgi.wiring.bundle; bundle-version:Version="1.14.0.v20210324-0332"; osgi.wiring.bundle="org.apache.batik.transcoder"
+  org.apache.batik.transcoder [osgi.identity; osgi.identity="org.apache.batik.transcoder"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.anim.dom)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.anim.dom; uses:=org.apache.batik.dom
+  org.apache.batik.anim [osgi.identity; osgi.identity="org.apache.batik.anim"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.dom)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.dom; uses:=org.apache.batik.xml
+  org.apache.batik.dom [osgi.identity; osgi.identity="org.apache.batik.dom"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.xml)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.xml; uses:=null
+  org.apache.batik.xml [osgi.identity; osgi.identity="org.apache.batik.xml"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.util)(&(bundle-version>=1.14.0)(!(bundle-version>=2.0.0))))
+     |
+    provide: osgi.wiring.bundle: org.apache.batik.util
+  org.apache.batik.util [osgi.identity; type="osgi.bundle"; version:Version="1.16.0.v20221027-0840"; osgi.identity="org.apache.batik.util"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.gmf.runtime.diagram.ui.printing.render 4 0 2024-10-07 12:50:01.680
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.gmf.runtime.diagram.ui.printing.render [2102]
+  Unresolved requirement: Require-Bundle: org.eclipse.gmf.runtime.draw2d.ui.render.awt; bundle-version="[1.2.0,2.0.0)"
+    -> Bundle-SymbolicName: org.eclipse.gmf.runtime.draw2d.ui.render.awt; bundle-version="1.10.0.202204130739"; singleton:="true"
+       org.eclipse.gmf.runtime.draw2d.ui.render.awt [2111]
+         No resolution report for the bundle.  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"] because it is exposed to package 'org.apache.batik.util.io' from resources org.apache.batik.util [osgi.identity; osgi.identity="org.apache.batik.util"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"] and org.apache.batik.util [osgi.identity; type="osgi.bundle"; version:Version="1.16.0.v20221027-0840"; osgi.identity="org.apache.batik.util"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.util)(&(bundle-version>=1.14.0)(!(bundle-version>=1.15.0))))
+     |
+    provide: osgi.wiring.bundle: org.apache.batik.util
+  org.apache.batik.util [osgi.identity; osgi.identity="org.apache.batik.util"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+
+Chain 2:
+  org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.transcoder)(&(bundle-version>=1.14.0)(!(bundle-version>=1.15.0))))
+     |
+    provide: osgi.wiring.bundle; bundle-version:Version="1.14.0.v20210324-0332"; osgi.wiring.bundle="org.apache.batik.transcoder"
+  org.apache.batik.transcoder [osgi.identity; osgi.identity="org.apache.batik.transcoder"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.anim.dom)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.anim.dom; uses:=org.apache.batik.dom
+  org.apache.batik.anim [osgi.identity; osgi.identity="org.apache.batik.anim"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.dom)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.dom; uses:=org.apache.batik.xml
+  org.apache.batik.dom [osgi.identity; osgi.identity="org.apache.batik.dom"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.xml)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.xml; uses:=null
+  org.apache.batik.xml [osgi.identity; osgi.identity="org.apache.batik.xml"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.util)(&(bundle-version>=1.14.0)(!(bundle-version>=2.0.0))))
+     |
+    provide: osgi.wiring.bundle: org.apache.batik.util
+  org.apache.batik.util [osgi.identity; type="osgi.bundle"; version:Version="1.16.0.v20221027-0840"; osgi.identity="org.apache.batik.util"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.gmf.runtime.diagram.ui.render 4 0 2024-10-07 12:50:01.691
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.gmf.runtime.diagram.ui.render [2106]
+  Unresolved requirement: Require-Bundle: org.eclipse.gmf.runtime.diagram.ui.printing.render; bundle-version="[1.2.0,2.0.0)"
+    -> Bundle-SymbolicName: org.eclipse.gmf.runtime.diagram.ui.printing.render; bundle-version="1.8.0.202204130739"
+       org.eclipse.gmf.runtime.diagram.ui.printing.render [2102]
+         Unresolved requirement: Require-Bundle: org.eclipse.gmf.runtime.draw2d.ui.render.awt; bundle-version="[1.2.0,2.0.0)"
+           -> Bundle-SymbolicName: org.eclipse.gmf.runtime.draw2d.ui.render.awt; bundle-version="1.10.0.202204130739"; singleton:="true"
+              org.eclipse.gmf.runtime.draw2d.ui.render.awt [2111]
+                No resolution report for the bundle.  Unresolved requirement: Require-Bundle: org.eclipse.gmf.runtime.draw2d.ui.render.awt; bundle-version="[1.2.0,2.0.0)"
+    -> Bundle-SymbolicName: org.eclipse.gmf.runtime.draw2d.ui.render.awt; bundle-version="1.10.0.202204130739"; singleton:="true"
+  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"] because it is exposed to package 'org.apache.batik.util.io' from resources org.apache.batik.util [osgi.identity; osgi.identity="org.apache.batik.util"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"] and org.apache.batik.util [osgi.identity; type="osgi.bundle"; version:Version="1.16.0.v20221027-0840"; osgi.identity="org.apache.batik.util"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.util)(&(bundle-version>=1.14.0)(!(bundle-version>=1.15.0))))
+     |
+    provide: osgi.wiring.bundle: org.apache.batik.util
+  org.apache.batik.util [osgi.identity; osgi.identity="org.apache.batik.util"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+
+Chain 2:
+  org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.transcoder)(&(bundle-version>=1.14.0)(!(bundle-version>=1.15.0))))
+     |
+    provide: osgi.wiring.bundle; bundle-version:Version="1.14.0.v20210324-0332"; osgi.wiring.bundle="org.apache.batik.transcoder"
+  org.apache.batik.transcoder [osgi.identity; osgi.identity="org.apache.batik.transcoder"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.anim.dom)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.anim.dom; uses:=org.apache.batik.dom
+  org.apache.batik.anim [osgi.identity; osgi.identity="org.apache.batik.anim"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.dom)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.dom; uses:=org.apache.batik.xml
+  org.apache.batik.dom [osgi.identity; osgi.identity="org.apache.batik.dom"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.xml)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.xml; uses:=null
+  org.apache.batik.xml [osgi.identity; osgi.identity="org.apache.batik.xml"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.util)(&(bundle-version>=1.14.0)(!(bundle-version>=2.0.0))))
+     |
+    provide: osgi.wiring.bundle: org.apache.batik.util
+  org.apache.batik.util [osgi.identity; type="osgi.bundle"; version:Version="1.16.0.v20221027-0840"; osgi.identity="org.apache.batik.util"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.gmf.runtime.draw2d.ui.render.awt 4 0 2024-10-07 12:50:01.699
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.gmf.runtime.draw2d.ui.render.awt [2111]
+  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"] because it is exposed to package 'org.apache.batik.util.io' from resources org.apache.batik.util [osgi.identity; osgi.identity="org.apache.batik.util"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"] and org.apache.batik.util [osgi.identity; type="osgi.bundle"; version:Version="1.16.0.v20221027-0840"; osgi.identity="org.apache.batik.util"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.util)(&(bundle-version>=1.14.0)(!(bundle-version>=1.15.0))))
+     |
+    provide: osgi.wiring.bundle: org.apache.batik.util
+  org.apache.batik.util [osgi.identity; osgi.identity="org.apache.batik.util"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+
+Chain 2:
+  org.eclipse.gmf.runtime.draw2d.ui.render.awt [osgi.identity; osgi.identity="org.eclipse.gmf.runtime.draw2d.ui.render.awt"; type="osgi.bundle"; version:Version="1.10.0.202204130739"; singleton:="true"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.transcoder)(&(bundle-version>=1.14.0)(!(bundle-version>=1.15.0))))
+     |
+    provide: osgi.wiring.bundle; bundle-version:Version="1.14.0.v20210324-0332"; osgi.wiring.bundle="org.apache.batik.transcoder"
+  org.apache.batik.transcoder [osgi.identity; osgi.identity="org.apache.batik.transcoder"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.anim.dom)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.anim.dom; uses:=org.apache.batik.dom
+  org.apache.batik.anim [osgi.identity; osgi.identity="org.apache.batik.anim"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.dom)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.dom; uses:=org.apache.batik.xml
+  org.apache.batik.dom [osgi.identity; osgi.identity="org.apache.batik.dom"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    import: (&(osgi.wiring.package=org.apache.batik.xml)(&(version>=1.14.0)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package=org.apache.batik.xml; uses:=null
+  org.apache.batik.xml [osgi.identity; osgi.identity="org.apache.batik.xml"; type="osgi.bundle"; version:Version="1.14.0.v20210324-0332"]
+    require: (&(osgi.wiring.bundle=org.apache.batik.util)(&(bundle-version>=1.14.0)(!(bundle-version>=2.0.0))))
+     |
+    provide: osgi.wiring.bundle: org.apache.batik.util
+  org.apache.batik.util [osgi.identity; type="osgi.bundle"; version:Version="1.16.0.v20221027-0840"; osgi.identity="org.apache.batik.util"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.jface 2 0 2024-10-07 12:50:55.755
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2024-10-07 12:50:55.755
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		WorkbenchHandlerServiceHandler("org.eclipse.jdt.ui.navigate.open.type"),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.lsp4e.symbolinworkspace,Go to Symbol in Workspace,
+		,
+		Category(org.eclipse.lsp4e.category,Language Servers,null,true),
+		WorkbenchHandlerServiceHandler("org.eclipse.lsp4e.symbolinworkspace"),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.epp.mpc.ui 4 0 2024-10-07 12:51:22.202
+!MESSAGE bundle org.eclipse.epp.mpc.ui:1.10.1.v20221110-1841 (457)[org.eclipse.epp.internal.mpc.ui.MarketplaceClientUiResources(173)] : activate method [activate] not found; Component will fail
+
+!ENTRY org.eclipse.epp.mpc.ui 4 0 2024-10-07 12:51:22.209
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.ServiceException: Exception in org.apache.felix.scr.impl.manager.SingleComponentManager.getService()
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.factoryGetService(ServiceFactoryUse.java:228)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.getService(ServiceFactoryUse.java:114)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceConsumer$2.getService(ServiceConsumer.java:48)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.getService(ServiceRegistrationImpl.java:568)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.getService(ServiceRegistry.java:542)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.getService(BundleContextImpl.java:660)
+	at org.eclipse.epp.internal.mpc.ui.MarketplaceClientUiResources.getInstance(MarketplaceClientUiResources.java:210)
+	at org.eclipse.epp.internal.mpc.ui.discovery.MissingNatureDetector.earlyStartup(MissingNatureDetector.java:121)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.runEarlyStartup(EarlyStartupRunnable.java:79)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.run(EarlyStartupRunnable.java:55)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.ui.internal.Workbench$39.run(Workbench.java:2656)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+Caused by: java.lang.NullPointerException: Cannot invoke "org.apache.felix.scr.impl.inject.MethodResult.hasResult()" because "methodResult" is null
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager.setServiceProperties(AbstractComponentManager.java:1472)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.createImplementationObject(SingleComponentManager.java:402)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.createComponent(SingleComponentManager.java:115)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.getService(SingleComponentManager.java:1000)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.getServiceInternal(SingleComponentManager.java:973)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.getService(SingleComponentManager.java:918)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse$1.run(ServiceFactoryUse.java:218)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:318)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.factoryGetService(ServiceFactoryUse.java:215)
+	... 12 more
+
+!ENTRY org.eclipse.ui.workbench 4 2 2024-10-07 12:51:22.211
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.ui.workbench".
+!STACK 0
+java.lang.NullPointerException: Cannot invoke "org.eclipse.epp.internal.mpc.ui.MarketplaceClientUiResources.getPreferenceStore()" because the return value of "org.eclipse.epp.internal.mpc.ui.MarketplaceClientUiResources.getInstance()" is null
+	at org.eclipse.epp.internal.mpc.ui.discovery.MissingNatureDetector.earlyStartup(MissingNatureDetector.java:121)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.runEarlyStartup(EarlyStartupRunnable.java:79)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.run(EarlyStartupRunnable.java:55)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.ui.internal.Workbench$39.run(Workbench.java:2656)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.ui 4 0 2024-10-07 12:51:22.213
+!MESSAGE Unable to execute early startup code for the org.eclipse.ui.IStartup extension contributed by the 'org.eclipse.epp.mpc.ui' plug-in.
+!STACK 0
+java.lang.NullPointerException: Cannot invoke "org.eclipse.epp.internal.mpc.ui.MarketplaceClientUiResources.getPreferenceStore()" because the return value of "org.eclipse.epp.internal.mpc.ui.MarketplaceClientUiResources.getInstance()" is null
+	at org.eclipse.epp.internal.mpc.ui.discovery.MissingNatureDetector.earlyStartup(MissingNatureDetector.java:121)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.runEarlyStartup(EarlyStartupRunnable.java:79)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.run(EarlyStartupRunnable.java:55)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.ui.internal.Workbench$39.run(Workbench.java:2656)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.egit.core 2 0 2024-10-07 12:51:22.274
+!MESSAGE Cannot clean up internal hidden project
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException(/.org.eclipse.egit.core.cmp)[374]: java.lang.Exception: Resource '/.org.eclipse.egit.core.cmp' already exists.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:309)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:296)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:61)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:272)
+	at org.eclipse.egit.core.internal.efs.HiddenResources.createProject(HiddenResources.java:285)
+	at org.eclipse.egit.core.internal.efs.HiddenResources.getHiddenProject(HiddenResources.java:271)
+	at org.eclipse.egit.core.internal.efs.HiddenResources.initialize(HiddenResources.java:127)
+	at org.eclipse.core.runtime.jobs.Job$2.run(Job.java:187)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SUBENTRY 1 org.eclipse.core.resources 4 374 2024-10-07 12:51:22.275
+!MESSAGE Resource '/.org.eclipse.egit.core.cmp' already exists.
+!STACK 0
+java.lang.Exception: Resource '/.org.eclipse.egit.core.cmp' already exists.
+	at org.eclipse.core.internal.resources.ResourceException.provideStackTrace(ResourceException.java:42)
+	at org.eclipse.core.internal.resources.ResourceException.<init>(ResourceException.java:38)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:309)
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:296)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:61)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:272)
+	at org.eclipse.egit.core.internal.efs.HiddenResources.createProject(HiddenResources.java:285)
+	at org.eclipse.egit.core.internal.efs.HiddenResources.getHiddenProject(HiddenResources.java:271)
+	at org.eclipse.egit.core.internal.efs.HiddenResources.initialize(HiddenResources.java:127)
+	at org.eclipse.core.runtime.jobs.Job$2.run(Job.java:187)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.equinox.p2.operations 4 0 2024-10-07 12:56:53.202
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.operations 4 10050 2024-10-07 12:56:53.202
+!MESSAGE Cannot complete the request.  See the error log for details.
+!SUBENTRY 1 org.eclipse.equinox.p2.operations 2 10013 2024-10-07 12:56:53.202
+!MESSAGE EclEmma Java Code Coverage will be ignored because it is already installed, and updates are not permitted.
+
+!ENTRY org.eclipse.equinox.p2.operations 4 0 2024-10-07 12:56:53.209
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.operations 4 10050 2024-10-07 12:56:53.209
+!MESSAGE Cannot complete the request.  See the error log for details.
+!SUBENTRY 1 org.eclipse.equinox.p2.operations 2 10013 2024-10-07 12:56:53.209
+!MESSAGE EclEmma Java Code Coverage will be ignored because it is already installed, and updates are not permitted.
+
+!ENTRY org.eclipse.equinox.p2.operations 4 0 2024-10-07 12:56:53.297
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.operations 4 10050 2024-10-07 12:56:53.297
+!MESSAGE Cannot complete the request.  See the error log for details.
+!SUBENTRY 1 org.eclipse.equinox.p2.operations 2 10013 2024-10-07 12:56:53.297
+!MESSAGE EclEmma Java Code Coverage will be ignored because it is already installed, and updates are not permitted.
+
+!ENTRY org.eclipse.equinox.p2.operations 4 0 2024-10-07 12:56:53.298
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.operations 4 10050 2024-10-07 12:56:53.298
+!MESSAGE Cannot complete the request.  See the error log for details.
+!SUBENTRY 1 org.eclipse.equinox.p2.operations 2 10013 2024-10-07 12:56:53.298
+!MESSAGE EclEmma Java Code Coverage will be ignored because it is already installed, and updates are not permitted.
+
+!ENTRY org.eclipse.epp.mpc.ui 4 0 2024-10-07 13:19:20.124
+!MESSAGE bundle org.eclipse.epp.mpc.ui:1.10.1.v20221110-1841 (457)[org.eclipse.epp.internal.mpc.ui.MarketplaceClientUiResources(173)] : deactivate method [deactivate] not found; Component will fail

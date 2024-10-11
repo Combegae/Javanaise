@@ -1,1 +1,0 @@
-Rajouter un fichier pour implémenter jvnObject (cc'est c une interface)
