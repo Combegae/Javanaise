@@ -147,6 +147,7 @@ public class JvnServerImpl extends UnicastRemoteObject
 		} catch (java.rmi.RemoteException e) {
 			System.out.println("Problème jvnLockRead - RemoteException");
 		}
+		System.out.println("ServeurLocal: LockRead serialisable: " + o + "serveur local: " +this);
 		return o;
 	}	
 	/**
@@ -164,6 +165,7 @@ public class JvnServerImpl extends UnicastRemoteObject
 		} catch (java.rmi.RemoteException e) {
 			System.out.println("Problème jvnLockRead - RemoteException");
 		}
+		System.out.println("ServeurLocal: LockWrite serialisable: " + o + "serveur local: " + this);
 		return o;
 	}	
 

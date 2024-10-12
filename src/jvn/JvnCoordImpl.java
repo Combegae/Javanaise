@@ -119,23 +119,35 @@ public class JvnCoordImpl
       if (serverDistant != null) {
         try {
           objSerializable = serverDistant.jvnInvalidateWriterForReader(joi);
+          System.out.println(" Coordinateur: Salut je recup bien objet dans lockRead ");
         } catch (Exception e) {
           throw e;
         }
         lockWriteList.remove(joi);
+
+        Set<JvnRemoteServer> LockReadServerList = lockReadList.get(joi);
+        if (LockReadServerList == null) {
+          LockReadServerList = new HashSet<JvnRemoteServer>();
+        }
+        LockReadServerList.add(js);
+        lockReadList.put(joi, LockReadServerList);
+
         localMemory.put(joi, objSerializable);
       }
       else {
         objSerializable = localMemory.get(joi);
       }
       
+
       Set<JvnRemoteServer> LockReadServerList = lockReadList.get(joi);
       if (LockReadServerList == null) {
         LockReadServerList = new HashSet<JvnRemoteServer>();
       }
       LockReadServerList.add(js);
       lockReadList.put(joi, LockReadServerList);
+
     }
+    System.out.println("Coordinateur: LockRead serialisable: " + objSerializable + "serveur :" + js);
     return objSerializable;
    }
 
@@ -158,6 +170,7 @@ public class JvnCoordImpl
         JvnRemoteServer serverDistant = lockWriteList.get(joi);
         if (serverDistant != null) {
           objSerializable = serverDistant.jvnInvalidateWriter(joi);
+          lockWriteList.put(joi, js);
           localMemory.put(joi, objSerializable);
 
         } else {
@@ -168,8 +181,8 @@ public class JvnCoordImpl
           for (JvnRemoteServer server : LockReadServerList) {
             server.jvnInvalidateReader(joi);
           }
-          LockReadServerList.add(js);
-          lockReadList.put(joi, LockReadServerList);
+          
+          lockWriteList.put(joi, js);
           objSerializable = localMemory.get(joi);
         }
       } catch (Exception e) {
@@ -177,7 +190,7 @@ public class JvnCoordImpl
       }
       
     }
-
+    System.out.println("Coordinateur: LockWrite serialisable: " + objSerializable + "serveur :" + js);
     return objSerializable;
    }
 
