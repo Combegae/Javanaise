@@ -106,7 +106,7 @@ public class JvnCoordImpl
   * @throws java.rmi.RemoteException, JvnException
   **/
   public Serializable jvnLockRead(int joi, JvnRemoteServer js) throws java.rmi.RemoteException, JvnException {
-    System.out.println("Coord - jvLockRead \n");
+    System.out.println("ENTREE JVNLOCKREAD \n");
     String objectName = idHash.get(joi);
     Serializable objSerializable;
     JvnObject objectLocal = nameHash.get(objectName);
@@ -117,20 +117,23 @@ public class JvnCoordImpl
       JvnRemoteServer serverDistant = lockWriteList.get(joi);
       if (serverDistant != null) {
         try {
+          System.out.println(" Coordinateur: Invalidate WRITER FOR READER ");
           objSerializable = serverDistant.jvnInvalidateWriterForReader(joi);
-          System.out.println(" Coordinateur: Salut je recup bien objet dans lockRead ");
+
+          
         } catch (Exception e) {
           throw e;
         }
-        lockWriteList.remove(joi);
-
         Set<JvnRemoteServer> LockReadServerList = lockReadList.get(joi);
         if (LockReadServerList == null) {
           LockReadServerList = new HashSet<JvnRemoteServer>();
         }
+        System.out.println("Je rajoute le serveur dans la liste des read");
         LockReadServerList.add(js);
+        LockReadServerList.add(lockWriteList.get(joi));
         lockReadList.put(joi, LockReadServerList);
-
+        lockWriteList.remove(joi);
+        
         localMemory.put(joi, objSerializable);
       }
       else {
@@ -146,7 +149,7 @@ public class JvnCoordImpl
       lockReadList.put(joi, LockReadServerList);
 
     }
-    System.out.println("Coordinateur: LockRead serialisable: " + objSerializable + "serveur :" + js);
+    System.out.println("Coordinateur: LockRead serialisable: fin");
     return objSerializable;
    }
 
@@ -158,26 +161,31 @@ public class JvnCoordImpl
   * @throws java.rmi.RemoteException, JvnException
   **/
   public Serializable jvnLockWrite(int joi, JvnRemoteServer js) throws java.rmi.RemoteException, JvnException {
+    System.out.println("ENTREE JVNLOCKWRITE \n");
     String objectName = idHash.get(joi);
     Serializable objSerializable;
     JvnObject objectLocal = nameHash.get(objectName);
     if (objectLocal == null) {
+      System.out.println("\t JvnLockWrite - ObjetLocal Null \n");
       throw new JvnException();
     }
     synchronized (objectLocal) {
       try {
         JvnRemoteServer serverDistant = lockWriteList.get(joi);
         if (serverDistant != null) {
+          System.out.println("\t JvnLockWrite - appel a Invalidate Writer \n");
           objSerializable = serverDistant.jvnInvalidateWriter(joi);
           lockWriteList.put(joi, js);
           localMemory.put(joi, objSerializable);
 
         } else {
+          System.out.println("\t JvnLockWrite - ELSE ServeurDistant Non Null \n");
           Set<JvnRemoteServer> LockReadServerList = lockReadList.get(joi);
           if (LockReadServerList == null) {
             LockReadServerList = new HashSet<JvnRemoteServer>();
           }
           for (JvnRemoteServer server : LockReadServerList) {
+            System.out.println("\t JvnLockWrite - FOR Invalidate Reader\n");
             server.jvnInvalidateReader(joi);
           }
           
@@ -189,7 +197,7 @@ public class JvnCoordImpl
       }
       
     }
-    System.out.println("Coordinateur: LockWrite serialisable: " + objSerializable + "serveur :" + js);
+    System.out.println("Coordinateur: LockWrite serialisable:  fin ");
     return objSerializable;
    }
 

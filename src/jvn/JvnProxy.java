@@ -14,7 +14,7 @@ public class JvnProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        System.out.println("invoke");
+        System.out.println("ENTREE INVOKE \n");
         
         Object result;
         if (method.isAnnotationPresent(ProxyAnnotation.class)) {

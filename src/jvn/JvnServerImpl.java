@@ -188,8 +188,8 @@ public class JvnServerImpl extends UnicastRemoteObject
 	* @throws java.rmi.RemoteException,JvnException
 	**/
   public Serializable jvnInvalidateWriter(int joi) throws java.rmi.RemoteException,jvn.JvnException { 
-		(objectList.get(joi)).jvnInvalidateWriter();
-		return (objectList.get(joi)).jvnGetSharedObject();
+		return (objectList.get(joi)).jvnInvalidateWriter();
+		
 	};
 	
 	/**
@@ -199,8 +199,7 @@ public class JvnServerImpl extends UnicastRemoteObject
 	* @throws java.rmi.RemoteException,JvnException
 	**/
    public Serializable jvnInvalidateWriterForReader(int joi) throws java.rmi.RemoteException,jvn.JvnException { 
-		(objectList.get(joi)).jvnInvalidateWriterForReader();
-		return (objectList.get(joi)).jvnGetSharedObject();
+		return (objectList.get(joi)).jvnInvalidateWriterForReader();
 	};
 
 }
