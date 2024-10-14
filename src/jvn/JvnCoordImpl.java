@@ -40,8 +40,6 @@ public class JvnCoordImpl
   private Hashtable<Integer, Serializable> localMemory;
 
 
-
-
 /**
   * Default constructor
   * @throws JvnException
