@@ -106,6 +106,7 @@ public class JvnCoordImpl
   * @throws java.rmi.RemoteException, JvnException
   **/
   public Serializable jvnLockRead(int joi, JvnRemoteServer js) throws java.rmi.RemoteException, JvnException {
+    System.out.println("Coord - jvLockRead \n");
     String objectName = idHash.get(joi);
     Serializable objSerializable;
     JvnObject objectLocal = nameHash.get(objectName);

@@ -132,6 +132,7 @@ class writeListener implements ActionListener {
 
 		} catch (Exception je) {
 			System.out.println("IRC problem  : " + je.getMessage());
+			
 		}
 	}
 }

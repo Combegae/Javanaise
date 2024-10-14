@@ -5,10 +5,10 @@ import jvn.ProxyAnnotation;
 public interface SentenceItf {
     
 
-	@ProxyAnnotation(name="read")
+	@ProxyAnnotation(name="write")
 	public void write(String text);
 
-    @ProxyAnnotation(name="write")
+    @ProxyAnnotation(name="read")
     public String read();
 
 }
