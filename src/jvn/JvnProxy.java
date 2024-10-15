@@ -21,11 +21,13 @@ public class JvnProxy implements InvocationHandler {
             ProxyAnnotation annotation = method.getAnnotation(ProxyAnnotation.class);
             if (annotation.name().equals(("read"))) {
                 objet.jvnLockRead();
+                Thread.sleep(2000);
                 result = method.invoke(objet.jvnGetSharedObject() ,args);
                 objet.jvnUnLock();
                 return result;
             } else if (annotation.name().equals(("write"))) {
                 objet.jvnLockWrite();
+                Thread.sleep(2000);
                 result = method.invoke(objet.jvnGetSharedObject(), args);
                 objet.jvnUnLock();
                 return result;
