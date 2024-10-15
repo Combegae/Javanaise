@@ -27,11 +27,16 @@ public class burstTest {
             // TODO: handle exception
         }
         int number;
+        String text;
         System.out.println("Je commence ma boucle");
-        jo.write(Integer.toString(0));
-        for(int i =0; i < 100; i++ ){
-            number = Integer.parseInt(jo.read());
+        jo.write(Integer.toString(1));
+        for (int i = 0; i < 100; i++) {
+            text = jo.read();
+            System.out.println("le texte est: " + text);
+            number = Integer.parseInt(text);
+            System.out.println("NUMBER LU = "+ number);
             jo.write(Integer.toString(i));
+            System.out.println("NUMBER ECRIT= "+ number);
         }
         System.out.println("j'ai fini ma boucle");
     }

@@ -32,12 +32,10 @@ public class Irc {
 		
 		// initialize JVN
 		JvnServerImpl js = JvnServerImpl.jvnGetServer();
-		System.out.println("je test");
 		
 		// look up the IRC object in the JVN server
 		// if not found, create it, and register it in the JVN server
 		SentenceItf jo = (SentenceItf) JvnProxy.lookUpObject("IRC");
-		System.out.println("je test 2");
 		   
 		if (jo == null) {
 			jo = (SentenceItf) JvnProxy.newInstance(new Sentence(), "IRC");
@@ -45,9 +43,7 @@ public class Irc {
 
 		}
 		// create the graphical part of the Chat application
-		System.out.println("je test 3ap if");
 		new Irc(jo);
-		System.out.println("je test 4");
 	   
 	   } catch (Exception e) {
 		   System.out.println("IRC problem : " + e.getMessage());

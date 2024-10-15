@@ -3,6 +3,8 @@ package jvn;
 import java.io.Serializable;
 import java.rmi.Remote;
 
+import irc.SentenceItf;
+
 
 public class JvnObjectImpl implements Remote, JvnObject {
 
@@ -25,53 +27,75 @@ public class JvnObjectImpl implements Remote, JvnObject {
 
     @Override
     public void jvnLockRead() throws JvnException {
-        System.out.println("Objet: mon verrou est: " + this.verrou );
-        if (this.verrou == Verrou.RC || this.verrou == Verrou.RWC) {
-            this.verrou = Verrou.R;
-        }
-        else if(this.verrou == Verrou.WC){
-            this.verrou = Verrou.RWC;
-        }
-        else if (this.verrou == Verrou.NL) {
-            Serializable serialisableCoord = JvnServerImpl.jvnGetServer().jvnLockRead(this.id);
-            if(serialisableCoord != null){
-                o = serialisableCoord;
+
+        try {
+            switch (this.verrou) {
+                case RC:
+                    this.verrou = Verrou.R;
+                    break;
+            
+                case WC:
+                    this.verrou = Verrou.RWC;
+                    break;
+                case NL:
+                    o = JvnServerImpl.jvnGetServer().jvnLockRead(this.id);
+                    System.out.println("o est Modif");
+                    if (o == null) {
+                        System.out.println("o  NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");  
+                    }
+                    this.verrou = Verrou.R;
+                    break;
+                default:
+                    break;
             }
-            this.verrou = Verrou.R;
+        } catch (Exception e) {
+            throw new JvnException();
         }
-        System.out.println("Objet: mon verrou devient: " + this.verrou );
     }
 
     @Override
     public void jvnLockWrite() throws JvnException {
-        System.out.println("Objet: mon verrou est: " + this.verrou );
-        Serializable serialisableCoord;
-        if (this.verrou == Verrou.WC ) {
-            this.verrou = Verrou.W;
-        } else if (this.verrou == Verrou.NL || this.verrou == Verrou.R || this.verrou == Verrou.RC) {
-            System.out.println("Serverlocal lockWrite: Calling Coord lockwrite");
-
-            serialisableCoord = JvnServerImpl.jvnGetServer().jvnLockWrite(this.id);
-            if(serialisableCoord != null){
-                o = serialisableCoord;
+        try {
+            Serializable serialisableCoord;
+            switch (this.verrou) {
+                case WC:
+                    this.verrou = Verrou.W;
+                    break;
+                case NL:
+                case RC:
+                    o = JvnServerImpl.jvnGetServer().jvnLockWrite(this.id);
+                    System.out.println("o est Modif writeeeee");
+                    if (o == null) {
+                        System.out.println("o  NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");  
+                    }
+                    this.verrou = Verrou.W;
+                    break;
+                default:
+                    break;
             }
-            this.verrou = Verrou.W;
-        } else  if(this.verrou == Verrou.RWC  ){
-            this.verrou = Verrou.W;
+            System.out.println("Objet: mon verrou devient: " + this.verrou );
+        } catch (Exception e) {
+            throw new JvnException();
         }
-        System.out.println("Objet: mon verrou devient: " + this.verrou );
         
     }
 
     @Override
     public synchronized void jvnUnLock() throws JvnException {
-        System.out.println("ENTREE JVNUNLOCK");
-        System.out.println("Objet: mon verrou est: " + this.verrou );
-        if (this.verrou == Verrou.R) {
-            System.out.println("JvnUnlock - passage en RC");
-            this.verrou = Verrou.RC;
-        } else if (this.verrou == Verrou.W) {
-            this.verrou = Verrou.WC;
+
+        System.out.println("Objet: mon verrou est: " + this.verrou);
+        
+        switch (this.verrou) {
+            case R:
+                this.verrou = Verrou.RC;
+                break;
+            case W:
+                this.verrou = Verrou.WC;
+                break;
+            case RWC:
+                this.verrou = Verrou.WC;
+            default:
+                break;
         }
         System.out.println("Objet: mon verrou devient: " + this.verrou );
         try {
@@ -96,29 +120,22 @@ public class JvnObjectImpl implements Remote, JvnObject {
     public synchronized void jvnInvalidateReader() throws JvnException {
         System.out.println("ENTREE JVNINVALIDATEREADER \n");
         switch (this.verrou) {
-            case W:
-            case R:
-                try {
-                    wait();
-                } catch (Exception e) {
-                    System.out.println("Error :");
-                }
-                break;
-            case RC:
-                this.verrou = Verrou.NL;
-                break;
             case RWC:
-                try {
-                    wait();
-                } catch (Exception e) {
-                    System.out.println("Error :");
+            case R:
+                while (this.verrou == Verrou.R || this.verrou == Verrou.RWC) {
+                    try {
+                        wait();
+                    } catch (Exception e) {
+                        System.out.println("Error :");
+                    }
                 }
                 break;
             default:
                 System.err.println("Objet: Default invalidateReader: " + verrou );
                 break;
         }
-        this.verrou = Verrou.NL; 
+        this.verrou = Verrou.NL;
+        System.err.println("Mon verrou devient: " + verrou );
 
         
     }
@@ -127,29 +144,21 @@ public class JvnObjectImpl implements Remote, JvnObject {
     public synchronized Serializable jvnInvalidateWriter() throws JvnException {
         System.out.println("Entré invlade writer");
         switch (this.verrou) {
-            case W:
-                try {
-                    wait();
-                } catch (Exception e) {
-                    System.out.println("Error :");
-                }
-                break;
-            case WC:
-                break;
-
             case RWC:
-                try {
-                    wait();
-                } catch (Exception e) {
-                    System.out.println("Error :");
+            case W:
+                while (this.verrou == Verrou.W || this.verrou == Verrou.RWC) {
+                    try {
+                        wait();
+                    } catch (Exception e) {
+                        System.out.println("Error :");
+                    }
                 }
                 break;
-            
             default:
-                System.err.println("Objet: Default InvalidateWriter: " + verrou );
                 break;
         }
-        this.verrou = Verrou.NL; 
+        this.verrou = Verrou.NL;
+        System.err.println("Mon verrou devient: " + verrou );
 
 
         return o;
@@ -157,7 +166,6 @@ public class JvnObjectImpl implements Remote, JvnObject {
 
     @Override
     public synchronized Serializable jvnInvalidateWriterForReader() throws JvnException {
-        System.out.println("Entré invlade writer for reader");
         switch (this.verrou) {
             case W:
                 while (this.verrou == Verrou.W) {
@@ -167,13 +175,12 @@ public class JvnObjectImpl implements Remote, JvnObject {
                         System.out.println("Error :");
                     }
                 }
-                System.out.println("passage en RC :");
                 this.verrou = Verrou.RC;
                 break;
             case WC:
+                this.verrou = Verrou.NL;
             case RWC:
-                System.out.println("passage en RC :");
-                this.verrou = Verrou.RC;
+                this.verrou = Verrou.R;
             default:
                 break;
         }

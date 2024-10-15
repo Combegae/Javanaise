@@ -19,12 +19,17 @@ public class Sentence implements java.io.Serializable, SentenceItf {
 	
   
 	public Sentence() {
+		System.out.println("SENTENCE: CREE");
 		data = new String("");
 	}
+
 	public void write(String text) {
+		System.out.println("SENTENCE: write :" + text);
 		data = text;
 	}
+
 	public String read() {
+		System.out.println("SENTENCE: Read :" + data);
 		return data;	
 	}
 	
