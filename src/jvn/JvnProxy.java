@@ -15,7 +15,6 @@ public class JvnProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         try {
-            System.out.println("ENTREE INVOKE \n");
             Object result;
             if (method.isAnnotationPresent(ProxyAnnotation.class)) {
                 ProxyAnnotation annotation = method.getAnnotation(ProxyAnnotation.class);
@@ -42,7 +41,6 @@ public class JvnProxy implements InvocationHandler {
     }
     
     public static Object newInstance(Object obj, String objectName) throws JvnException {
-        System.out.println("newInstance");
         JvnServerImpl js = JvnServerImpl.jvnGetServer();
         JvnObject objet;
         try {
@@ -52,7 +50,6 @@ public class JvnProxy implements InvocationHandler {
             e.printStackTrace();
             throw new JvnException();
         }
-        System.out.println("Fin NewInstance");
         return java.lang.reflect.Proxy.newProxyInstance(
                 obj.getClass().getClassLoader(),
                 obj.getClass().getInterfaces(),
@@ -61,7 +58,6 @@ public class JvnProxy implements InvocationHandler {
     
     public static Object lookUpObject(String objectName) throws JvnException {
         
-        System.out.println("lookUpObject");
         JvnServerImpl js = JvnServerImpl.jvnGetServer();
         JvnObject jvnObject = js.jvnLookupObject(objectName);
         if (jvnObject == null) {

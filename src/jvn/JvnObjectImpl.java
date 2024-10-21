@@ -39,10 +39,6 @@ public class JvnObjectImpl implements Remote, JvnObject {
                     break;
                 case NL:
                     o = JvnServerImpl.jvnGetServer().jvnLockRead(this.id);
-                    System.out.println("o est Modif");
-                    if (o == null) {
-                        System.out.println("o  NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");  
-                    }
                     this.verrou = Verrou.R;
                     break;
                 default:
@@ -64,10 +60,6 @@ public class JvnObjectImpl implements Remote, JvnObject {
                 case NL:
                 case RC:
                     o = JvnServerImpl.jvnGetServer().jvnLockWrite(this.id);
-                    System.out.println("o est Modif writeeeee");
-                    if (o == null) {
-                        System.out.println("o  NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");  
-                    }
                     this.verrou = Verrou.W;
                     break;
                 default:
@@ -118,7 +110,6 @@ public class JvnObjectImpl implements Remote, JvnObject {
 
     @Override
     public synchronized void jvnInvalidateReader() throws JvnException {
-        System.out.println("ENTREE JVNINVALIDATEREADER \n");
         switch (this.verrou) {
             case RWC:
             case R:
